@@ -1,9 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  background-color: #141414;
+}
+
+@font-face {
+  font-family: "Glysa";
+  src: url("../assets/Glysa.woff") format("woff");
+}
+
+@font-face {
+  font-family: "LexendDeca";
+  src: url("../assets/LexendDecaRegular.woff") format("woff");
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "LexendDeca", Roboto;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  background-color: var(--background-color);
 }
 
 a {
@@ -13,14 +35,42 @@ a {
 
 * {
   box-sizing: border-box;
+  position: relative;
+  color: #fff;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+h1,
+h2 {
+  font-style: normal;
+  font-weight: 500;
+  color: #fff;
+}
+
+h1 {
+  font-family: "Glysa", Roboto;
+  font-size: 32px;
+  line-height: 48px;
+}
+
+h2 {
+  font-family: "LexendDeca", Roboto;
+  font-size: 24px;
+  line-height: 40px;
+}
+
+h3 {
+  font-family: "Lexend Deca";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.button {
+  cursor: pointer;
+}
+
+.button-gradrient {
+  background: linear-gradient(180deg, rgba(40, 40, 40, 0.7) 0%, #282828 100%),
+    #141414;
 }
