@@ -1,9 +1,24 @@
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import List from "@mui/material/List";
+import ContactList from "../components/ContactList";
 
-export default function Home() {
+export async function getStaticProps() {
+  const allContactAPIRoute = "http://localhost:3000/api/contacts/getAll";
+
+  const contactList = await (
+    await fetch(allContactAPIRoute, { method: "POST" })
+  ).json();
+
+  return {
+    props: {
+      contactList,
+    },
+    // - At most once every 60 seconds
+    revalidate: 1, // In seconds
+  };
+}
+
+export default function Home({ contactList }) {
   return (
     <>
       <Head>
@@ -48,8 +63,8 @@ export default function Home() {
           </div>
         </div>
         <div className="row grid grid-cols-4 row-start-3 pt-[25px]">
-          <div className="col-span-2 col-start-2">
-            <List>"mapp through contacts"</List>
+          <div className="col-span-3 col-start-1 justify-center flex sm:col-span-2 sm:col-start-2">
+            <ContactList list={contactList} />
           </div>
         </div>
       </div>
