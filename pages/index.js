@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import ContactList from "../components/ContactList";
+import ModalOpenButton from "../components/ModalOpenButton";
 
 export async function getStaticProps() {
   const allContactAPIRoute = "http://localhost:3000/api/contacts/getAll";
@@ -55,10 +56,7 @@ export default function Home({ contactList }) {
                   alt="profil icon"
                 />
               </div>
-              <div className="add-new button button-gradrient w-[120px] rounded-full p-[8px_16px_8px_12px]">
-                <span className="text-[18px] mr-[6px] md:mr-[8px]">+</span> Add
-                new
-              </div>
+              <ModalOpenButton add={true} title="Add new" />
             </div>
           </div>
         </div>

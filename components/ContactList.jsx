@@ -32,17 +32,15 @@ const ContactList = ({ list }) => {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary={
-                  <Typography variant="h3" color="rgba(255, 255, 255, 0.56)">
-                    {name}
-                  </Typography>
-                }
+                primary={<h3>{name}</h3>}
                 secondary={
                   <Typography fontSize={12} color="rgba(255, 255, 255, 0.56)">
                     +{formatedPhone}
                   </Typography>
                 }
               />
+
+              {/* SPEED DIal for actions */}
             </ListItem>
           );
         })}

@@ -1,7 +1,12 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
+import { StateContext } from "../context/settingContext";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <StateContext>
+      <Component {...pageProps} />
+    </StateContext>
+  );
 }
 
-export default MyApp
+export default MyApp;
