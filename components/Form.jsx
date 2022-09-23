@@ -1,23 +1,57 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { useStateContext } from "../context/settingContext";
+import Alert from "@mui/material/Alert";
+
+const upload = async (data) => {
+  const rawResponse = await fetch("http://localhost:3000/api/contacts/add", {
+    method: "POST",
+    headers: { "Content-Type": "multipart/form-data" },
+    cache: "no-cache",
+    credentials: "same-origin",
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: data,
+  });
+
+  const content = await rawResponse.json();
+};
 
 const Form = () => {
+  const { setContacts } = useStateContext();
+
+  const handleFormUploadResponse = async (data) => {
+    const { status } = data.data;
+    if (!status) {
+      return false;
+    }
+
+    const allContactAPIRoute = "http://localhost:3000/api/contacts/getAll";
+
+    const contactList = await (
+      await fetch(allContactAPIRoute, { method: "POST" })
+    ).json();
+
+    setContacts(contactList);
+
+    setOpenModal(false);
+  };
   const fileInput = useRef();
   const { setOpenModal } = useStateContext();
 
-  const [uploadImgURL, setUploadImgURL] = useState("/img/empty-profile.png");
+  const initPreviewImageURL = "/img/empty-profile.png";
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      name: "",
-      phone: "",
-      email: "",
-    },
+  const [uploadImgURL, setUploadImgURL] = useState(initPreviewImageURL);
+  const [showImageError, setShowImageError] = useState(false);
+
+  const [formFieldsValues, setformFieldsValues] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    image: {},
   });
 
   const CssTextField = styled(TextField)({
@@ -51,118 +85,128 @@ const Form = () => {
     },
   });
 
-  const profileImage = document.getElementById("imageUpload");
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
 
-  const onSubmit = (data) => {
-    data.image = profileImage.files[0];
-    console.log(data);
+    if (uploadImgURL === initPreviewImageURL) {
+      setShowImageError(true);
+
+      return;
+    }
+
+    var data = new FormData();
+
+    for (const key in formFieldsValues) {
+      if (!Object.hasOwnProperty.call(formFieldsValues, key)) {
+        continue;
+      }
+
+      let value = formFieldsValues[key];
+
+      data.append(key, value);
+    }
+
+    const response = await fetch("/api/contacts/add", {
+      method: "POST",
+      body: data,
+    })
+      .then((r) => r.json())
+      .then((data) => handleFormUploadResponse(data));
+
+    //upload(data);
   };
 
-  //   useEffect(() => {
-  //     first;
-
-  //     return () => {
-  //       second;
-  //     };
-  //   }, [profileImage.files[0].name]);
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form id="uploadForm" onSubmit={(e) => handleOnSubmit(e)}>
       <div className="input-container mb-[20px] image-upload-container flex items-center">
         <Image
           src={uploadImgURL}
-          className="rounded-full mr-[15px]"
+          className="rounded-full object-cover mr-[15px]"
           width={88}
           height={88}
           id=""
         />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => fileInput.current.click()}
+          className="flex flex-row align-center ml-[15px] p-[8px_16px_8px_12px] inline-block bg-[#2D2D2D] rounded-[8px]"
+        >
+          <span className="text-[18px] mr-[6px] md:mr-[8px]">+</span> Add
+          picture
+        </Button>
 
-        <Controller
-          name="profileImg"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => fileInput.current.click()}
-                className="flex flex-row align-center ml-[15px] p-[8px_16px_8px_12px] inline-block bg-[#2D2D2D] rounded-[8px]"
-              >
-                <span className="text-[18px] mr-[6px] md:mr-[8px]">+</span> Add
-                picture
-              </Button>
+        <input
+          ref={fileInput}
+          type="file"
+          name="profileImage"
+          id="imageUpload"
+          value={""}
+          className="hidden"
+          onChange={() => {
+            setformFieldsValues((prev) => ({
+              ...prev,
+              image: fileInput.current.files[0],
+            }));
 
-              <input
-                {...field}
-                ref={fileInput}
-                type="file"
-                id="imageUpload"
-                value={""}
-                className="hidden"
-                onChange={() => {
-                  setUploadImgURL(
-                    window.URL.createObjectURL(fileInput.current.files[0])
-                  );
-                }}
-              />
-            </>
-          )}
+            if (showImageError) {
+              setShowImageError(false);
+            }
+
+            setUploadImgURL(
+              window.URL.createObjectURL(fileInput.current.files[0])
+            );
+          }}
         />
       </div>
+      {showImageError && (
+        <Alert
+          variant="filled"
+          className="mb-[20px] flex items-center"
+          severity="error"
+        >
+          Please upload an Image
+        </Alert>
+      )}
 
       <div className="input-container mb-[20px]">
-        {" "}
-        <Controller
+        <CssTextField
+          value={formFieldsValues.name}
+          onChange={(e) => {
+            setformFieldsValues((prev) => ({ ...prev, name: e.target.value }));
+          }}
           name="name"
-          control={control}
-          render={({ field }) => (
-            <>
-              <CssTextField
-                {...field}
-                autoComplete="off"
-                label="Name"
-                required
-              />
-            </>
-          )}
+          label="Name"
+          autoComplete="none"
+          required
         />
       </div>
 
       <div className="input-container mb-[20px]">
-        {" "}
-        <Controller
+        <CssTextField
+          value={formFieldsValues.phone}
+          onChange={(e) => {
+            setformFieldsValues((prev) => ({ ...prev, phone: e.target.value }));
+          }}
           name="phone"
-          control={control}
-          render={({ field }) => (
-            <>
-              <CssTextField
-                {...field}
-                autoComplete="off"
-                label="Phone"
-                required
-              />
-            </>
-          )}
+          label="Phone"
+          autoComplete="none"
+          required
         />
       </div>
 
       <div className="input-container mb-[20px]">
-        {" "}
-        <Controller
+        <CssTextField
+          value={formFieldsValues.email}
+          onChange={(e) => {
+            console.log(e.target.value);
+            setformFieldsValues((prev) => ({ ...prev, email: e.target.value }));
+          }}
+          label="Email"
+          type="email"
           name="email"
-          control={control}
-          render={({ field }) => (
-            <>
-              <CssTextField
-                {...field}
-                autoComplete="off"
-                label="Email"
-                type="email"
-                required
-              />
-            </>
-          )}
+          autoComplete="none"
+          required
         />
       </div>
 

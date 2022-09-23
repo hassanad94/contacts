@@ -5,14 +5,17 @@ import Avatar from "@mui/material/Avatar";
 import Image from "next/image";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@mui/material";
+import { useStateContext } from "../context/settingContext";
 
-const ContactList = ({ list }) => {
-  console.log(list);
+const ContactList = () => {
+  const { contacts } = useStateContext();
+
+  console.log(contacts);
 
   return (
     <List>
-      {list &&
-        list.map((item) => {
+      {contacts &&
+        contacts.map((item) => {
           const { name, image, formatedPhone, person_id } = item;
 
           return (

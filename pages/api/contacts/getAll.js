@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   try {
     const get = await getAll;
 
-    res.status(500).json(get);
+    res.status(200).json(get);
   } catch (error) {
     return res.json(error);
   }

@@ -1,7 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect } from "react";
 import ContactList from "../components/ContactList";
 import ModalOpenButton from "../components/ModalOpenButton";
+import { useStateContext } from "../context/settingContext";
 
 export async function getStaticProps() {
   const allContactAPIRoute = "http://localhost:3000/api/contacts/getAll";
@@ -15,11 +17,17 @@ export async function getStaticProps() {
       contactList,
     },
     // - At most once every 60 seconds
-    revalidate: 1, // In seconds
+    revalidate: 60, // In seconds
   };
 }
 
 export default function Home({ contactList }) {
+  const { setContacts, contacts } = useStateContext();
+
+  useEffect(() => {
+    setContacts(contactList);
+  }, []);
+
   return (
     <>
       <Head>
@@ -62,7 +70,7 @@ export default function Home({ contactList }) {
         </div>
         <div className="row grid grid-cols-4 row-start-3 pt-[25px]">
           <div className="col-span-3 col-start-1 justify-center flex sm:col-span-2 sm:col-start-2">
-            <ContactList list={contactList} />
+            <ContactList list={contacts} />
           </div>
         </div>
       </div>
