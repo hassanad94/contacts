@@ -170,13 +170,19 @@ const Form = () => {
         <CssTextField
           value={formFieldsValues.phone}
           onChange={(e) => {
-            setformFieldsValues((prev) => ({ ...prev, phone: e.target.value }));
+            setformFieldsValues((prev) => ({
+              ...prev,
+              phone: e.target.value.replaceAll(" ", ""),
+            }));
           }}
           name="phone"
           label="Phone"
+          placeholder="+36317810260"
+          inputProps={{
+            pattern: "[0-9+]{12}",
+            title: "36707864231",
+          }}
           autoComplete="none"
-          pattern="[0-9]+"
-          title="format: 36705459875"
           required
         />
       </div>
