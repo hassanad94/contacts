@@ -34,7 +34,7 @@ apiRoute.post(async (req, res) => {
   let dateName = `${new Date().getTime()}-${req.files[0].originalname}`;
 
   var imageFileName = `${path}${dateName}`;
-  const { name, phone, email } = req.body;
+  var { name, phone, email } = req.body;
 
   const insertNew = new Promise((resolve, reject) => {
     const sql = "INSERT INTO person (name, email,phone, image) VALUES(?,?,?,?)";
@@ -44,7 +44,7 @@ apiRoute.post(async (req, res) => {
       [
         name,
         email,
-        phone,
+        phone.replace("+", ""),
         imageFileName.replace("./public", "http://localhost:3000"),
       ],
       async function (err) {

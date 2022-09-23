@@ -22,11 +22,7 @@ export async function getStaticProps() {
 }
 
 export default function Home({ contactList }) {
-  const { setContacts, contacts } = useStateContext();
-
-  useEffect(() => {
-    setContacts(contactList);
-  }, []);
+  const { contacts } = useStateContext();
 
   return (
     <>
@@ -70,7 +66,7 @@ export default function Home({ contactList }) {
         </div>
         <div className="row grid grid-cols-4 row-start-3 pt-[25px]">
           <div className="col-span-3 col-start-1 justify-center flex sm:col-span-2 sm:col-start-2">
-            <ContactList list={contacts} />
+            <ContactList list={contacts.length ? contacts : contactList} />
           </div>
         </div>
       </div>

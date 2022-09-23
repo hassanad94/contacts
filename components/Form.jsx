@@ -6,19 +6,38 @@ import { styled } from "@mui/material/styles";
 import { useStateContext } from "../context/settingContext";
 import Alert from "@mui/material/Alert";
 
-const upload = async (data) => {
-  const rawResponse = await fetch("http://localhost:3000/api/contacts/add", {
-    method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
-    cache: "no-cache",
-    credentials: "same-origin",
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-    body: data,
-  });
+const CssTextField = styled(TextField)({
+  "&": {
+    width: "100%",
+  },
+  "& .MuiInputBase-input": {
+    color: "rgba(255, 255, 255, 0.32)",
+    outline: "0!important",
+    width: "100%",
+  },
+  "& label": {
+    color: "rgba(255, 255, 255, 0.32)",
+  },
+  "& label.Mui-focused": {
+    color: "rgba(255, 255, 255, 0.32)",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "green",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#282828",
+    },
+    "&:hover fieldset": {
+      borderColor: "#282828",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#1565c0",
+    },
+  },
+});
 
-  const content = await rawResponse.json();
-};
+const initPreviewImageURL = "/img/empty-profile.png";
 
 const Form = () => {
   const { setContacts } = useStateContext();
@@ -42,8 +61,6 @@ const Form = () => {
   const fileInput = useRef();
   const { setOpenModal } = useStateContext();
 
-  const initPreviewImageURL = "/img/empty-profile.png";
-
   const [uploadImgURL, setUploadImgURL] = useState(initPreviewImageURL);
   const [showImageError, setShowImageError] = useState(false);
 
@@ -52,37 +69,6 @@ const Form = () => {
     phone: "",
     email: "",
     image: {},
-  });
-
-  const CssTextField = styled(TextField)({
-    "&": {
-      width: "100%",
-    },
-    "& .MuiInputBase-input": {
-      color: "rgba(255, 255, 255, 0.32)",
-      outline: "0!important",
-      width: "100%",
-    },
-    "& label": {
-      color: "rgba(255, 255, 255, 0.32)",
-    },
-    "& label.Mui-focused": {
-      color: "rgba(255, 255, 255, 0.32)",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: "green",
-    },
-    "& .MuiOutlinedInput-root": {
-      "& fieldset": {
-        borderColor: "#282828",
-      },
-      "&:hover fieldset": {
-        borderColor: "#282828",
-      },
-      "&.Mui-focused fieldset": {
-        borderColor: "#1565c0",
-      },
-    },
   });
 
   const handleOnSubmit = async (e) => {
@@ -112,8 +98,6 @@ const Form = () => {
     })
       .then((r) => r.json())
       .then((data) => handleFormUploadResponse(data));
-
-    //upload(data);
   };
 
   return (
@@ -191,6 +175,8 @@ const Form = () => {
           name="phone"
           label="Phone"
           autoComplete="none"
+          pattern="[0-9]+"
+          title="format: 36705459875"
           required
         />
       </div>
@@ -199,7 +185,6 @@ const Form = () => {
         <CssTextField
           value={formFieldsValues.email}
           onChange={(e) => {
-            console.log(e.target.value);
             setformFieldsValues((prev) => ({ ...prev, email: e.target.value }));
           }}
           label="Email"
