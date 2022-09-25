@@ -47,7 +47,7 @@ export default function ContactSettingsButton() {
         onClick={handleClick}
         className="w-[40px] mr-[20px] h-[40px] rounded-[8px] bg-[#1E1E1E] hover:bg-[#1565c0]"
       >
-        <Image width={36} height={6} src="/img/dots.svg" />
+        <Image width={36} height={6} alt="dots" src="/img/dots.svg" />
       </Button>
       <StyledMenu
         id="basic-menu"
@@ -60,19 +60,19 @@ export default function ContactSettingsButton() {
       >
         <StyledMenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Image width={15} height={15} src="/img/edit.svg" />
+            <Image width={15} alt="edit" height={15} src="/img/edit.svg" />
           </ListItemIcon>
           Edit
         </StyledMenuItem>
         <StyledMenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Image width={15} height={15} src="/img/fav.svg" />
+            <Image width={15} alt="fav" height={15} src="/img/fav.svg" />
           </ListItemIcon>
           Favorite
         </StyledMenuItem>
         <StyledMenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Image width={15} height={15} src="/img/del.svg" />
+            <Image width={15} alt="remove" height={15} src="/img/del.svg" />
           </ListItemIcon>
           Remove
         </StyledMenuItem>

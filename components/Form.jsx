@@ -105,6 +105,7 @@ const Form = () => {
       <div className="input-container mb-[20px] image-upload-container flex items-center">
         <Image
           src={uploadImgURL}
+          alt="Profile Image"
           className="rounded-full object-cover mr-[15px]"
           width={88}
           height={88}
@@ -127,6 +128,7 @@ const Form = () => {
                 <span className="p-[0px] leading-[1] mr-[2px]">
                   <Image
                     src="/img/change.png"
+                    alt="change"
                     className="object-contain"
                     width={20}
                     height={20}
@@ -148,6 +150,7 @@ const Form = () => {
             >
               <Image
                 src="/img/del.svg"
+                alt="delete"
                 className="object-contain mr-[15px]"
                 width={20}
                 height={20}
