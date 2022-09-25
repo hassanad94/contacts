@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect } from "react";
 import ContactList from "../components/ContactList";
 import ModalOpenButton from "../components/ModalOpenButton";
 import { useStateContext } from "../context/settingContext";
@@ -34,7 +33,7 @@ export default function Home({ contactList }) {
           <div className="spacer border-x col-span-2 col-start-2 h-[100%]"></div>
         </div>
         <div className="row border-y grid row-start-2 grid-cols-[15%_1fr_1fr_15%]  items-center">
-          <div className="button justify-center items-center flex back">
+          <div className="button justify-end pr-[10%] items-center flex back">
             <Image
               src="/img/back-icon.png"
               width={20}
@@ -63,6 +62,14 @@ export default function Home({ contactList }) {
               </div>
               <ModalOpenButton add={true} title="Add new" />
             </div>
+          </div>
+          <div className="col-start-4 button justify-start pl-[10%] items-center flex back ">
+            <Image
+              width={20}
+              height={20}
+              src="/img/light.svg"
+              alt="switch theme"
+            />
           </div>
         </div>
         <div className="row grid grid-cols-[15%_1fr_1fr_15%]  row-start-3">

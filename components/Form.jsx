@@ -147,7 +147,7 @@ const Form = () => {
               className="flex flex-row w-[auto] min-w-fit align-center ml-[8px] p-[8px] inline-block bg-[#2D2D2D] rounded-[8px]"
             >
               <Image
-                src="/img/delete.png"
+                src="/img/del.svg"
                 className="object-contain mr-[15px]"
                 width={20}
                 height={20}

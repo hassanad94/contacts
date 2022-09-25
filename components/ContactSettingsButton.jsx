@@ -4,11 +4,11 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Image from "next/image";
 import { styled } from "@mui/material/styles";
+import ListItemIcon from "@mui/material/ListItemIcon";
 
 const StyledMenuItem = styled(MenuItem)({
   "&": {
     color: "white",
-    fontWeight: "bold",
     fontFamily: "Lexend Deca",
     fontSize: "14px",
     lineHeight: "20px",
@@ -21,6 +21,9 @@ const StyledMenuItem = styled(MenuItem)({
 const StyledMenu = styled(Menu)({
   "& .MuiPaper-root": {
     background: "#1E1E1E",
+  },
+  "& ul": {
+    width: "200px",
   },
 });
 
@@ -55,9 +58,24 @@ export default function ContactSettingsButton() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <StyledMenuItem onClick={handleClose}>Edit</StyledMenuItem>
-        <StyledMenuItem onClick={handleClose}>Favorite</StyledMenuItem>
-        <StyledMenuItem onClick={handleClose}>Remove</StyledMenuItem>
+        <StyledMenuItem onClick={handleClose}>
+          <ListItemIcon>
+            <Image width={15} height={15} src="/img/edit.svg" />
+          </ListItemIcon>
+          Edit
+        </StyledMenuItem>
+        <StyledMenuItem onClick={handleClose}>
+          <ListItemIcon>
+            <Image width={15} height={15} src="/img/fav.svg" />
+          </ListItemIcon>
+          Favorite
+        </StyledMenuItem>
+        <StyledMenuItem onClick={handleClose}>
+          <ListItemIcon>
+            <Image width={15} height={15} src="/img/del.svg" />
+          </ListItemIcon>
+          Remove
+        </StyledMenuItem>
       </StyledMenu>
     </>
   );
