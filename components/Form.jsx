@@ -116,13 +116,50 @@ const Form = () => {
           onClick={() => fileInput.current.click()}
           className="flex flex-row align-center ml-[15px] p-[8px_16px_8px_12px] inline-block bg-[#2D2D2D] rounded-[8px]"
         >
-          <span className="text-[18px] mr-[6px] md:mr-[8px]">+</span> Add
-          picture
+          {uploadImgURL === initPreviewImageURL ? (
+            <>
+              <span className="text-[18px] mr-[6px] md:mr-[8px]">+</span> Add
+              picture
+            </>
+          ) : (
+            <>
+              <>
+                <span className="p-[0px] leading-[1] mr-[2px]">
+                  <Image
+                    src="/img/change.png"
+                    className="object-contain"
+                    width={20}
+                    height={20}
+                  />
+                </span>{" "}
+                <span className="leading-[20px]">Change pitcure</span>
+              </>
+            </>
+          )}
         </Button>
+
+        {uploadImgURL !== initPreviewImageURL && (
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setUploadImgURL(initPreviewImageURL)}
+              className="flex flex-row w-[auto] min-w-fit align-center ml-[8px] p-[8px] inline-block bg-[#2D2D2D] rounded-[8px]"
+            >
+              <Image
+                src="/img/delete.png"
+                className="object-contain mr-[15px]"
+                width={20}
+                height={20}
+              />
+            </Button>
+          </>
+        )}
 
         <input
           ref={fileInput}
           type="file"
+          accept="image/*"
           name="profileImage"
           id="imageUpload"
           value={""}

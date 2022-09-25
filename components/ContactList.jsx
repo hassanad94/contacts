@@ -4,7 +4,9 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Image from "next/image";
 import ListItemText from "@mui/material/ListItemText";
+import SpeedDial from "@mui/material/SpeedDial";
 import { Typography } from "@mui/material";
+import ContactSettingsButton from "./ContactSettingsButton";
 
 const ContactList = ({ list }) => {
   return (
@@ -38,7 +40,7 @@ const ContactList = ({ list }) => {
                 }
               />
 
-              {/* SPEED DIal for actions */}
+              <ContactSettingsButton />
             </ListItem>
           );
         })}

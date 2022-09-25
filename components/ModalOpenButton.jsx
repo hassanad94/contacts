@@ -34,7 +34,7 @@ const ModalOpenButton = ({ title, icon }) => {
       </div>
 
       <Modal
-        className="cursor-pointer p-[15px]"
+        className="cursor-pointer shadow-none p-[15px]"
         open={openModal}
         onClose={handleClose}
       >
