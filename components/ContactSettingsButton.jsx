@@ -1,35 +1,64 @@
-import Box from "@mui/material/Box";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import FileCopyIcon from "@mui/icons-material/FileCopyOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import PrintIcon from "@mui/icons-material/Print";
-import ShareIcon from "@mui/icons-material/Share";
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Image from "next/image";
+import { styled } from "@mui/material/styles";
 
-const actions = [
-  { icon: <FileCopyIcon />, name: "Copy" },
-  { icon: <SaveIcon />, name: "Save" },
-  { icon: <PrintIcon />, name: "Print" },
-  { icon: <ShareIcon />, name: "Share" },
-];
+const StyledMenuItem = styled(MenuItem)({
+  "&": {
+    color: "white",
+    fontWeight: "bold",
+    fontFamily: "Lexend Deca",
+    fontSize: "14px",
+    lineHeight: "20px",
+  },
+  "&:hover": {
+    background: "#232323",
+  },
+});
+
+const StyledMenu = styled(Menu)({
+  "& .MuiPaper-root": {
+    background: "#1E1E1E",
+  },
+});
 
 export default function ContactSettingsButton() {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = !!anchorEl;
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <Box sx={{ height: 320, transform: "translateZ(0px)", flexGrow: 1 }}>
-      <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        sx={{ position: "absolute", bottom: 16, right: 16 }}
-        icon={<SpeedDialIcon />}
+    <>
+      <Button
+        id="basic-button"
+        aria-controls={open ? "basic-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        className="w-[40px] mr-[20px] h-[40px] rounded-[8px] bg-[#1E1E1E] hover:bg-[#1565c0]"
       >
-        {actions.map((action) => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-          />
-        ))}
-      </SpeedDial>
-    </Box>
+        <Image width={36} height={6} src="/img/dots.svg" />
+      </Button>
+      <StyledMenu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        <StyledMenuItem onClick={handleClose}>Edit</StyledMenuItem>
+        <StyledMenuItem onClick={handleClose}>Favorite</StyledMenuItem>
+        <StyledMenuItem onClick={handleClose}>Remove</StyledMenuItem>
+      </StyledMenu>
+    </>
   );
 }

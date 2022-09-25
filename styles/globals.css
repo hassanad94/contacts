@@ -16,6 +16,10 @@
   src: url("../assets/LexendDecaRegular.woff") format("woff");
 }
 
+.content {
+  max-width: 1024px;
+}
+
 html,
 body {
   padding: 0;
@@ -82,8 +86,10 @@ h2.modal-title {
 }
 
 .button-gradrient {
-  background: linear-gradient(180deg, rgba(40, 40, 40, 0.7) 0%, #282828 100%),
-    #141414;
+  background: linear-gradient(180deg, rgba(40, 40, 40, 0.7) 0%, #282828 100%);
+}
+.button-gradrient:hover {
+  background: #1565c0;
 }
 
 .MuiListItemText-secondary {

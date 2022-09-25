@@ -29,19 +29,18 @@ export default function Home({ contactList }) {
       <Head>
         <title>Contacts</title>
       </Head>
-      <div className="main-container grid grid-rows-[1fr_1fr_10fr] h-screen">
-        <div className="row grid row-start-2 grid-cols-4 items-center">
-          <div className="back-container">
-            <div className="button justify-center flex back">
-              <Image
-                src="/img/back-icon.png"
-                width={20}
-                height={20}
-                alt="back icon"
-              />
-            </div>
+      <div className="main-container grid grid-rows-[13%_13%_auto] m-[auto] h-screen">
+        <div className="row row-start-1"></div>
+        <div className="row border-y grid row-start-2 grid-cols-[15%_1fr_1fr_30px]  items-center">
+          <div className="button justify-center items-center flex back">
+            <Image
+              src="/img/back-icon.png"
+              width={20}
+              height={20}
+              alt="back icon"
+            />
           </div>
-          <div className="col-start-2 col-end-4 text-center">
+          <div className="border-l flex flex-col pl-[10%] h-[100%] items-center justify-center col-start-2 col-end-4 text-center">
             <h1 className="">Contacts</h1>
             <div className="settings inline-flex items-center">
               <div className="setting button mr-[8px]">
@@ -64,8 +63,8 @@ export default function Home({ contactList }) {
             </div>
           </div>
         </div>
-        <div className="row grid grid-cols-4 row-start-3 pt-[25px]">
-          <div className="col-span-3 col-start-1 justify-center flex sm:col-span-2 sm:col-start-2">
+        <div className="row grid grid-cols-[15%_1fr_1fr_30px]  row-start-3">
+          <div className="border-l contact-list-container col-span-4 pl-[10%] col-start-2 justify-center flex sm:col-span-2 sm:col-start-2">
             <ContactList list={contacts.length ? contacts : contactList} />
           </div>
         </div>

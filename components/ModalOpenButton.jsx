@@ -28,7 +28,7 @@ const ModalOpenButton = ({ title, icon }) => {
     <>
       <div
         onClick={handleOpen}
-        className="add-new button button-gradrient w-[120px] rounded-full p-[8px_16px_8px_12px]"
+        className=" add-new button button-gradrient w-[120px] rounded-full p-[8px_16px_8px_12px] hover:bg-[#1565c0]"
       >
         <span className="text-[18px] mr-[6px] md:mr-[8px]">+</span> {title}
       </div>
