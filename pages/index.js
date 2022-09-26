@@ -60,10 +60,14 @@ export default function Home({ contactList }) {
                   alt="profil icon"
                 />
               </div>
-              <ModalOpenButton add={true} title="Add new" />
+              <ModalOpenButton
+                modalTitle="Add Contact"
+                add={true}
+                title="Add new"
+              />
             </div>
           </div>
-          <div className="col-start-4 button justify-start pl-[10%] items-center flex back ">
+          <div className="col-start-4 button justify-start p-[10%] items-center flex back ">
             <Image
               width={20}
               height={20}

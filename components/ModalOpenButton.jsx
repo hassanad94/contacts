@@ -11,15 +11,15 @@ const style = {
   transform: "translate(-50%, -50%)",
   maxWidth: 360,
   bgcolor: "#141414",
-  boxShadow: 24,
+  boxShadow: 0,
   padding: "24px",
   outline: 0,
   borderRadius: "8px",
   cursor: "auto",
-  width: "100%",
+  with: "100%",
 };
 
-const ModalOpenButton = ({ title, icon }) => {
+const ModalOpenButton = ({ title }) => {
   const { openModal, setOpenModal } = useStateContext();
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
@@ -39,8 +39,7 @@ const ModalOpenButton = ({ title, icon }) => {
         onClose={handleClose}
       >
         <Box sx={style}>
-          <h2 className="modal-title mb-[20px]">Add Contact</h2>
-          <Form />
+          <Form title="Add Contact" />
         </Box>
       </Modal>
     </>

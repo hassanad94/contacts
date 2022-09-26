@@ -34,11 +34,11 @@ apiRoute.post(async (req, res) => {
   let dateName = `${new Date().getTime()}-${req.files[0].originalname}`;
 
   var imageFileName = `${path}${dateName}`;
-  var { name, phone, email } = req.body;
+  var { name, phone, email, id } = req.body;
 
   const insertNew = new Promise((resolve, reject) => {
-    const sql = "INSERT INTO person (name, email,phone, image) VALUES(?,?,?,?)";
-
+    const sql =
+      "UPDATE person set name = ? , email = ?, phone = ?, image = ? WHERE person_id = ?";
     db.run(
       sql,
       [
@@ -46,6 +46,7 @@ apiRoute.post(async (req, res) => {
         email,
         phone.replace("+", ""),
         imageFileName.replace("./public", "http://localhost:3000"),
+        id,
       ],
       async function (err) {
         if (err) {

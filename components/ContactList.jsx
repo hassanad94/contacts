@@ -35,7 +35,7 @@ const ContactList = ({ list }) => {
                 }
               />
 
-              <ContactSettingsButton />
+              <ContactSettingsButton personID={person_id} />
             </ListItem>
           );
         })}

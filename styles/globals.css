@@ -113,3 +113,8 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: rgba(255, 255, 255, 0.32) !important;
   caret-color: rgba(255, 255, 255, 0.32);
 }
+
+.MuiBackdrop-root {
+  background-color: rgb(0 0 0 / 26%);
+  box-shadow: none;
+}

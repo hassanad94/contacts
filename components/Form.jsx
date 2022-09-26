@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { useStateContext } from "../context/settingContext";
 import Alert from "@mui/material/Alert";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const CssTextField = styled(TextField)({
   "&": {
@@ -37,10 +39,24 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const initPreviewImageURL = "/img/empty-profile.png";
+const Form = ({ personID, title }) => {
+  const { contact, setContacts } = useStateContext();
+  const [loading, setLoading] = useState(true);
+  const { setOpenModal, setEditModal } = useStateContext();
 
-const Form = () => {
-  const { setContacts } = useStateContext();
+  const [initPreviewImageURL, setInitPreviewImageURL] = useState(
+    "/img/empty-profile.png"
+  );
+
+  const closeModal = () => {
+    if (personID) {
+      console.log("v");
+      setEditModal(false);
+      return;
+    }
+
+    setOpenModal(false);
+  };
 
   const handleFormUploadResponse = async (data) => {
     const { status } = data.data;
@@ -56,10 +72,9 @@ const Form = () => {
 
     setContacts(contactList);
 
-    setOpenModal(false);
+    closeModal();
   };
   const fileInput = useRef();
-  const { setOpenModal } = useStateContext();
 
   const [uploadImgURL, setUploadImgURL] = useState(initPreviewImageURL);
   const [showImageError, setShowImageError] = useState(false);
@@ -68,13 +83,42 @@ const Form = () => {
     name: "",
     phone: "",
     email: "",
-    image: {},
+    image: null,
   });
+
+  const getPerson = async () => {
+    await fetch("/api/contacts/get", {
+      method: "POST",
+      body: JSON.stringify({ contactID: personID }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        const { name, phone, email, image } = data.person[0];
+        setUploadImgURL(image);
+        setInitPreviewImageURL(image);
+
+        setformFieldsValues({ name, phone, email, image });
+
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (personID) {
+      getPerson();
+      return;
+    }
+
+    setLoading(false);
+    return () => {
+      setLoading(false);
+    };
+  }, []);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (uploadImgURL === initPreviewImageURL) {
+    if (uploadImgURL === initPreviewImageURL && !personID) {
       setShowImageError(true);
 
       return;
@@ -92,7 +136,11 @@ const Form = () => {
       data.append(key, value);
     }
 
-    const response = await fetch("/api/contacts/add", {
+    const uploadMethod = personID ? "upload" : "add";
+
+    if (personID) data.append("id", personID);
+
+    const response = await fetch(`/api/contacts/${uploadMethod}`, {
       method: "POST",
       body: data,
     })
@@ -100,165 +148,190 @@ const Form = () => {
       .then((data) => handleFormUploadResponse(data));
   };
 
-  return (
-    <form id="uploadForm" onSubmit={(e) => handleOnSubmit(e)}>
-      <div className="input-container mb-[20px] image-upload-container flex items-center">
-        <Image
-          src={uploadImgURL}
-          alt="Profile Image"
-          className="rounded-full object-cover mr-[15px]"
-          width={88}
-          height={88}
-          id=""
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => fileInput.current.click()}
-          className="flex flex-row align-center ml-[15px] p-[8px_16px_8px_12px] inline-block bg-[#2D2D2D] rounded-[8px]"
-        >
-          {uploadImgURL === initPreviewImageURL ? (
-            <>
-              <span className="text-[18px] mr-[6px] md:mr-[8px]">+</span> Add
-              picture
-            </>
-          ) : (
-            <>
-              <>
-                <span className="p-[0px] leading-[1] mr-[2px]">
-                  <Image
-                    src="/img/change.png"
-                    alt="change"
-                    className="object-contain"
-                    width={20}
-                    height={20}
-                  />
-                </span>{" "}
-                <span className="leading-[20px]">Change pitcure</span>
-              </>
-            </>
-          )}
-        </Button>
-
-        {uploadImgURL !== initPreviewImageURL && (
-          <>
+  if (!loading) {
+    return (
+      <>
+        <h2 className="modal-title mb-[20px]">{title}</h2>
+        <form id="uploadForm" onSubmit={(e) => handleOnSubmit(e)}>
+          <div className="input-container mb-[20px] image-upload-container flex items-center">
+            <Image
+              src={uploadImgURL}
+              alt="Profile Image"
+              className="rounded-full object-cover mr-[15px]"
+              width={88}
+              height={88}
+              id=""
+            />
             <Button
               variant="contained"
               color="primary"
-              onClick={() => setUploadImgURL(initPreviewImageURL)}
-              className="flex flex-row w-[auto] min-w-fit align-center ml-[8px] p-[8px] inline-block bg-[#2D2D2D] rounded-[8px]"
+              onClick={() => fileInput.current.click()}
+              className="flex flex-row align-center ml-[15px] p-[8px_16px_8px_12px] inline-block bg-[#2D2D2D] rounded-[8px]"
             >
-              <Image
-                src="/img/del.svg"
-                alt="delete"
-                className="object-contain mr-[15px]"
-                width={20}
-                height={20}
-              />
+              {uploadImgURL === initPreviewImageURL && !personID ? (
+                <>
+                  <span className="text-[18px] mr-[6px] md:mr-[8px]">+</span>{" "}
+                  Add picture
+                </>
+              ) : (
+                <>
+                  <>
+                    <span className="p-[0px] leading-[1] mr-[2px]">
+                      <Image
+                        src="/img/change.png"
+                        alt="change"
+                        className="object-contain"
+                        width={20}
+                        height={20}
+                      />
+                    </span>{" "}
+                    <span className="leading-[20px]">Change pitcure</span>
+                  </>
+                </>
+              )}
             </Button>
-          </>
-        )}
 
-        <input
-          ref={fileInput}
-          type="file"
-          accept="image/*"
-          name="profileImage"
-          id="imageUpload"
-          value={""}
-          className="hidden"
-          onChange={() => {
-            setformFieldsValues((prev) => ({
-              ...prev,
-              image: fileInput.current.files[0],
-            }));
+            {uploadImgURL !== initPreviewImageURL && (
+              <>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setUploadImgURL(initPreviewImageURL)}
+                  className="flex flex-row w-[auto] min-w-fit align-center ml-[8px] p-[8px] inline-block bg-[#2D2D2D] rounded-[8px]"
+                >
+                  <Image
+                    src="/img/del.svg"
+                    alt="delete"
+                    className="object-contain mr-[15px]"
+                    width={20}
+                    height={20}
+                  />
+                </Button>
+              </>
+            )}
 
-            if (showImageError) {
-              setShowImageError(false);
-            }
+            <input
+              ref={fileInput}
+              type="file"
+              accept="image/*"
+              name="profileImage"
+              id="imageUpload"
+              value={""}
+              className="hidden"
+              onChange={() => {
+                setformFieldsValues((prev) => ({
+                  ...prev,
+                  image: fileInput.current.files[0],
+                }));
 
-            setUploadImgURL(
-              window.URL.createObjectURL(fileInput.current.files[0])
-            );
-          }}
-        />
-      </div>
-      {showImageError && (
-        <Alert
-          variant="filled"
-          className="mb-[20px] flex items-center"
-          severity="error"
-        >
-          Please upload an Image
-        </Alert>
-      )}
+                if (showImageError) {
+                  setShowImageError(false);
+                }
 
-      <div className="input-container mb-[20px]">
-        <CssTextField
-          value={formFieldsValues.name}
-          onChange={(e) => {
-            setformFieldsValues((prev) => ({ ...prev, name: e.target.value }));
-          }}
-          name="name"
-          label="Name"
-          autoComplete="none"
-          required
-        />
-      </div>
+                setUploadImgURL(
+                  window.URL.createObjectURL(fileInput.current.files[0])
+                );
+              }}
+            />
+          </div>
+          {showImageError && (
+            <Alert
+              variant="filled"
+              className="mb-[20px] flex items-center"
+              severity="error"
+            >
+              Please upload an Image
+            </Alert>
+          )}
 
-      <div className="input-container mb-[20px]">
-        <CssTextField
-          value={formFieldsValues.phone}
-          onChange={(e) => {
-            setformFieldsValues((prev) => ({
-              ...prev,
-              phone: e.target.value.replaceAll(" ", ""),
-            }));
-          }}
-          name="phone"
-          label="Phone"
-          placeholder="+36317810260"
-          inputProps={{
-            pattern: "[0-9+]{12}",
-            title: "36707864231",
-          }}
-          autoComplete="none"
-          required
-        />
-      </div>
+          <div className="input-container mb-[20px]">
+            <CssTextField
+              value={formFieldsValues.name}
+              onChange={(e) => {
+                setformFieldsValues((prev) => ({
+                  ...prev,
+                  name: e.target.value,
+                }));
+              }}
+              name="name"
+              label="Name"
+              autoComplete="none"
+              required
+            />
+          </div>
 
-      <div className="input-container mb-[20px]">
-        <CssTextField
-          value={formFieldsValues.email}
-          onChange={(e) => {
-            setformFieldsValues((prev) => ({ ...prev, email: e.target.value }));
-          }}
-          label="Email"
-          type="email"
-          name="email"
-          autoComplete="none"
-          required
-        />
-      </div>
+          <div className="input-container mb-[20px]">
+            <CssTextField
+              value={formFieldsValues.phone}
+              onChange={(e) => {
+                setformFieldsValues((prev) => ({
+                  ...prev,
+                  phone: e.target.value.replaceAll(" ", ""),
+                }));
+              }}
+              name="phone"
+              label="Phone"
+              placeholder="+36317810260"
+              inputProps={{
+                pattern: "[0-9+]{12}",
+                title: "36707864231",
+              }}
+              autoComplete="none"
+              required
+            />
+          </div>
 
-      <div className="actions-container flex justify-end">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setOpenModal(false);
-          }}
-          className="text-[#fff] p-[8px_16px] mr-[20px] rounded-[8px]"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="text-[#fff] p-[8px_16px] bg-[#262626] rounded-[8px]"
-        >
-          Done
-        </button>
-      </div>
-    </form>
+          <div className="input-container mb-[20px]">
+            <CssTextField
+              value={formFieldsValues.email}
+              onChange={(e) => {
+                setformFieldsValues((prev) => ({
+                  ...prev,
+                  email: e.target.value,
+                }));
+              }}
+              label="Email"
+              type="email"
+              name="email"
+              autoComplete="none"
+              required
+            />
+          </div>
+
+          <div className="actions-container flex justify-end">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                closeModal();
+              }}
+              className="text-[#fff] p-[8px_16px] mr-[20px] rounded-[8px]"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="text-[#fff] p-[8px_16px] bg-[#262626] rounded-[8px]"
+            >
+              Done
+            </button>
+          </div>
+        </form>
+      </>
+    );
+  }
+  return (
+    <>
+      <Backdrop
+        sx={{
+          color: "#fff",
+          bgcolor: "transparent",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={true}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </>
   );
 };
 
