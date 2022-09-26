@@ -11,6 +11,7 @@ const Context = createContext();
 export const StateContext = ({ children }) => {
   const [contacts, setContacts] = useState([]);
 
+  //getDAta + useEffect Only because i can not fetch data from local host due too build issue
   const getData = useCallback(async () => {
     const allContactAPIRoute = "http://localhost:3000/api/contacts/getAll";
 

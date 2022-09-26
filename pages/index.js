@@ -82,6 +82,8 @@ export default function Home() {
         </div>
         <div className="row grid grid-cols-[15%_1fr_1fr_15%]  row-start-3">
           <div className="border-x contact-list-container col-span-2  col-start-2 justify-center flex">
+            {/* If i would have my own server */}
+            {/* <ContactList list={!!contacts ? contact : contactList } /> */}
             <ContactList list={contacts} />
           </div>
         </div>
