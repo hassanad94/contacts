@@ -128,11 +128,6 @@ const Form = (...props) => {
 
       let value = formFieldsValues[key];
 
-      // //Hot fix Needs a beter solution
-      // if ((uploadImgURL === initPreviewImageURL) & (key === "image")) {
-      //   value = getBase64Image(formFieldsValues[key]);
-      //   console.log(value);
-      // }
       data.append(key, value);
     }
 

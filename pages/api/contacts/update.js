@@ -45,8 +45,6 @@ apiRoute.post(async (req, res) => {
     imageFileName = image;
   }
 
-  console.log(name, phone, email, image, id);
-
   const updateContactSQL = new Promise((resolve, reject) => {
     const sql =
       "UPDATE person set name = ? , email = ?, phone = ?, image = ? WHERE person_id = ?";

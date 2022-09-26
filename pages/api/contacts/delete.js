@@ -36,7 +36,6 @@ apiRoute.post(async (req, res) => {
       const revalidate = await fetch(
         "http://localhost:3000/api/revalidate?secret=testtoken"
       );
-      console.log(this);
       return resolve(this);
     });
   });
