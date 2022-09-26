@@ -39,23 +39,18 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const Form = ({ personID, title }) => {
-  const { contact, setContacts } = useStateContext();
+const Form = (...props) => {
+  const { setContacts } = useStateContext();
   const [loading, setLoading] = useState(true);
-  const { setOpenModal, setEditModal } = useStateContext();
+
+  const { title, personID, modalSetting } = props[0];
 
   const [initPreviewImageURL, setInitPreviewImageURL] = useState(
     "/img/empty-profile.png"
   );
 
   const closeModal = () => {
-    if (personID) {
-      console.log("v");
-      setEditModal(false);
-      return;
-    }
-
-    setOpenModal(false);
+    modalSetting(false);
   };
 
   const handleFormUploadResponse = async (data) => {
@@ -93,7 +88,7 @@ const Form = ({ personID, title }) => {
     })
       .then((r) => r.json())
       .then((data) => {
-        const { name, phone, email, image } = data.person[0];
+        const { name, formatedPhone: phone, email, image } = data.person[0];
         setUploadImgURL(image);
         setInitPreviewImageURL(image);
 
@@ -133,10 +128,15 @@ const Form = ({ personID, title }) => {
 
       let value = formFieldsValues[key];
 
+      // //Hot fix Needs a beter solution
+      // if ((uploadImgURL === initPreviewImageURL) & (key === "image")) {
+      //   value = getBase64Image(formFieldsValues[key]);
+      //   console.log(value);
+      // }
       data.append(key, value);
     }
 
-    const uploadMethod = personID ? "upload" : "add";
+    const uploadMethod = personID ? "update" : "add";
 
     if (personID) data.append("id", personID);
 
@@ -266,16 +266,16 @@ const Form = ({ personID, title }) => {
               onChange={(e) => {
                 setformFieldsValues((prev) => ({
                   ...prev,
-                  phone: e.target.value.replaceAll(" ", ""),
+                  phone: e.target.value,
                 }));
               }}
               name="phone"
               label="Phone"
-              placeholder="+36317810260"
-              inputProps={{
-                pattern: "[0-9+]{12}",
-                title: "36707864231",
-              }}
+              placeholder="+36 31 781 0260"
+              // inputProps={{
+              //   pattern: "[0-9 +]{15}",
+              //   title: "36707864231",
+              // }}
               autoComplete="none"
               required
             />
@@ -305,6 +305,7 @@ const Form = ({ personID, title }) => {
                 closeModal();
               }}
               className="text-[#fff] p-[8px_16px] mr-[20px] rounded-[8px]"
+              type="button"
             >
               Cancel
             </button>

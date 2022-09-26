@@ -9,13 +9,17 @@ import ContactSettingsButton from "./ContactSettingsButton";
 
 const ContactList = ({ list }) => {
   return (
-    <List className="w-[100%] max-w-[770px]">
+    <List className="w-[100%] p-[3%] max-w-[770px]">
       {list &&
         list.map((item) => {
           const { name, image, formatedPhone, person_id } = item;
 
           return (
-            <ListItem key={person_id} data-id={person_id} className="p-[5px]">
+            <ListItem
+              key={person_id}
+              data-id={person_id}
+              className="p-[5px_0px]"
+            >
               <ListItemAvatar className="w-[40px] mr-[10px] shrink-0 min-w-fit">
                 <Avatar>
                   <Image

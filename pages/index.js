@@ -41,30 +41,32 @@ export default function Home({ contactList }) {
               alt="back icon"
             />
           </div>
-          <div className="border-x flex flex-col pl-[3%] h-[100%] items-center justify-center col-start-2 col-end-4 text-center">
-            <h1 className="">Contacts</h1>
-            <div className="settings inline-flex items-center">
-              <div className="setting button mr-[8px]">
-                <Image
-                  src="/img/settings-icon.png"
-                  width={20}
-                  height={20}
-                  alt="setting icon"
+          <div className="border-x col-start-2 col-end-4 text-center h-[100%]">
+            <div className="max-w-[770px] p-[0_3%] m-[auto] flex flex-col sm:flex-row h-[100%] sm:justify-between items-center justify-center">
+              <h1 className="">Contacts</h1>
+              <div className="settings inline-flex items-center">
+                <div className="setting button mr-[8px]">
+                  <Image
+                    src="/img/settings-icon.png"
+                    width={20}
+                    height={20}
+                    alt="setting icon"
+                  />
+                </div>
+                <div className="profile mr-[8px] button">
+                  <Image
+                    src="/img/profile-icon.png"
+                    width={20}
+                    height={20}
+                    alt="profil icon"
+                  />
+                </div>
+                <ModalOpenButton
+                  modalTitle="Add Contact"
+                  add={true}
+                  title="Add new"
                 />
               </div>
-              <div className="profile mr-[8px] button">
-                <Image
-                  src="/img/profile-icon.png"
-                  width={20}
-                  height={20}
-                  alt="profil icon"
-                />
-              </div>
-              <ModalOpenButton
-                modalTitle="Add Contact"
-                add={true}
-                title="Add new"
-              />
             </div>
           </div>
           <div className="col-start-4 button justify-start p-[10%] items-center flex back ">
@@ -77,7 +79,7 @@ export default function Home({ contactList }) {
           </div>
         </div>
         <div className="row grid grid-cols-[15%_1fr_1fr_15%]  row-start-3">
-          <div className="border-x contact-list-container col-span-2 pl-[3%] col-start-2 justify-center flex">
+          <div className="border-x contact-list-container col-span-2  col-start-2 justify-center flex">
             <ContactList list={contacts.length ? contacts : contactList} />
           </div>
         </div>

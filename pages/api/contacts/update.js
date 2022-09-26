@@ -30,13 +30,24 @@ apiRoute.post(async (req, res) => {
     }
   );
 
-  let path = `./public/uploads/`;
-  let dateName = `${new Date().getTime()}-${req.files[0].originalname}`;
+  var imageFileName = "";
 
-  var imageFileName = `${path}${dateName}`;
-  var { name, phone, email, id } = req.body;
+  if (!req.body.image) {
+    let path = `./public/uploads/`;
+    let dateName = `${new Date().getTime()}-${req.files[0].originalname}`;
 
-  const insertNew = new Promise((resolve, reject) => {
+    imageFileName = `${path}${dateName}`;
+  }
+
+  var { name, phone, email, image, id } = req.body;
+
+  if (req.body.image) {
+    imageFileName = image;
+  }
+
+  console.log(name, phone, email, image, id);
+
+  const updateContactSQL = new Promise((resolve, reject) => {
     const sql =
       "UPDATE person set name = ? , email = ?, phone = ?, image = ? WHERE person_id = ?";
     db.run(
@@ -55,16 +66,19 @@ apiRoute.post(async (req, res) => {
         const revalidate = await fetch(
           "http://localhost:3000/api/revalidate?secret=testtoken"
         );
-        return resolve(this.lastID);
+        return resolve(this);
       }
     );
   });
 
   try {
-    const uploadImage = await saveFile(req.files[0], imageFileName);
-    const insert = await insertNew;
+    if (!req.body.image) {
+      const uploadImage = await saveFile(req.files[0], imageFileName);
+    }
 
-    res.status(200).json({ data: { status: true, id: insert } });
+    const updateContact = await updateContactSQL;
+
+    res.status(200).json({ data: { status: true, id: updateContact } });
   } catch (error) {
     return res.json(error);
   }

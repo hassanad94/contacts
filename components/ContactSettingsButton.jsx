@@ -66,28 +66,24 @@ export default function ContactSettingsButton({ personID }) {
     setAnchorEl(null);
   };
 
-  const { setEditModal, editModal } = useStateContext();
+  const { setContacts } = useStateContext();
+  const [editModal, setEditModal] = useState(false);
   const handleModalOpen = () => setEditModal(true);
   const handleModalClose = () => setEditModal(false);
 
-  const [personUnderHandleID, setPersonUnderHandleID] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = !!anchorEl;
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    setPersonUnderHandleID(
-      event.currentTarget.attributes["data-person-id"].value
-    );
   };
   const handleClose = () => {
     setAnchorEl(null);
-    setPersonUnderHandleID(null);
   };
 
   const handleDelete = async (event) => {
     const response = await fetch("/api/contacts/delete", {
       method: "POST",
-      body: JSON.stringify({ contactID: personUnderHandleID }),
+      body: JSON.stringify({ contactID: personID }),
     })
       .then((r) => r.json())
       .then((data) => {
@@ -108,7 +104,11 @@ export default function ContactSettingsButton({ personID }) {
         onClose={handleModalClose}
       >
         <Box sx={style}>
-          <Form personID={personID} title="Edit Contact" />
+          <Form
+            modalSetting={setEditModal}
+            personID={personID}
+            title="Edit Contact"
+          />
         </Box>
       </Modal>
 
@@ -118,8 +118,7 @@ export default function ContactSettingsButton({ personID }) {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        data-person-id={personID}
-        className="w-[40px] mr-[20px] h-[40px] rounded-[8px] bg-[#1E1E1E] hover:bg-[#1565c0]"
+        className="w-[40px] h-[40px] rounded-[8px] bg-[#1E1E1E] hover:bg-[#1565c0]"
       >
         <Image width={36} height={6} alt="dots" src="/img/dots.svg" />
       </Button>
@@ -145,11 +144,7 @@ export default function ContactSettingsButton({ personID }) {
           </ListItemIcon>
           Favorite
         </StyledMenuItem>
-        <StyledMenuItem
-          onClick={(e) => {
-            handleDelete(e);
-          }}
-        >
+        <StyledMenuItem onClick={handleDelete}>
           <ListItemIcon>
             <Image width={15} alt="remove" height={15} src="/img/del.svg" />
           </ListItemIcon>

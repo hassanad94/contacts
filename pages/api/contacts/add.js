@@ -44,7 +44,7 @@ apiRoute.post(async (req, res) => {
       [
         name,
         email,
-        phone.replace("+", ""),
+        phone.replace(/\D/g, ""),
         imageFileName.replace("./public", "http://localhost:3000"),
       ],
       async function (err) {

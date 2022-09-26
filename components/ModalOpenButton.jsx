@@ -2,7 +2,6 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Form from "./Form";
-import { useStateContext } from "../context/settingContext";
 
 const style = {
   position: "absolute",
@@ -16,11 +15,11 @@ const style = {
   outline: 0,
   borderRadius: "8px",
   cursor: "auto",
-  with: "100%",
+  width: "100%",
 };
 
 const ModalOpenButton = ({ title }) => {
-  const { openModal, setOpenModal } = useStateContext();
+  const [openModal, setOpenModal] = useState(false);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
@@ -39,7 +38,7 @@ const ModalOpenButton = ({ title }) => {
         onClose={handleClose}
       >
         <Box sx={style}>
-          <Form title="Add Contact" />
+          <Form modalSetting={setOpenModal} title="Add Contact" />
         </Box>
       </Modal>
     </>
