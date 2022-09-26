@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -81,7 +81,7 @@ const Form = (...props) => {
     image: null,
   });
 
-  const getPerson = async () => {
+  const getPerson = useCallback(async () => {
     await fetch("/api/contacts/get", {
       method: "POST",
       body: JSON.stringify({ contactID: personID }),
@@ -96,7 +96,7 @@ const Form = (...props) => {
 
         setLoading(false);
       });
-  };
+  }, [personID]);
 
   useEffect(() => {
     if (personID) {
@@ -105,10 +105,7 @@ const Form = (...props) => {
     }
 
     setLoading(false);
-    return () => {
-      setLoading(false);
-    };
-  }, []);
+  }, [getPerson, personID]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();

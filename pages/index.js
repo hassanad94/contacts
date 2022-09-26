@@ -4,23 +4,25 @@ import ContactList from "../components/ContactList";
 import ModalOpenButton from "../components/ModalOpenButton";
 import { useStateContext } from "../context/settingContext";
 
-export async function getStaticProps() {
-  const allContactAPIRoute = "http://localhost:3000/api/contacts/getAll";
+// I would use something like this, but since im developing locally i can not use API CALLS
 
-  const contactList = await (
-    await fetch(allContactAPIRoute, { method: "POST" })
-  ).json();
+// export async function getStaticProps() {
+//   const allContactAPIRoute = "http://localhost:3000/api/contacts/getAll";
 
-  return {
-    props: {
-      contactList,
-    },
-    // - At most once every 60 seconds
-    revalidate: 60, // In seconds
-  };
-}
+//   const contactList = await (
+//     await fetch(allContactAPIRoute, { method: "POST" })
+//   ).json();
 
-export default function Home({ contactList }) {
+//   return {
+//     props: {
+//       contactList,
+//     },
+//     // - At most once every 60 seconds
+//     revalidate: 60, // In seconds
+//   };
+// }
+
+export default function Home() {
   const { contacts } = useStateContext();
 
   return (
@@ -80,7 +82,7 @@ export default function Home({ contactList }) {
         </div>
         <div className="row grid grid-cols-[15%_1fr_1fr_15%]  row-start-3">
           <div className="border-x contact-list-container col-span-2  col-start-2 justify-center flex">
-            <ContactList list={contacts.length ? contacts : contactList} />
+            <ContactList list={contacts} />
           </div>
         </div>
       </div>

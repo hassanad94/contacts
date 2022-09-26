@@ -51,9 +51,9 @@ apiRoute.post(async (req, res) => {
         if (err) {
           return reject(err);
         }
-        const revalidate = await fetch(
-          "http://localhost:3000/api/revalidate?secret=testtoken"
-        );
+        // const revalidate = await fetch(
+        //   "http://localhost:3000/api/revalidate?secret=testtoken"
+        // );
         return resolve(this.lastID);
       }
     );
