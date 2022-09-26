@@ -5,7 +5,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 npm run dev
 
-# ##Contacts
+# Contacts
 
 Site For recording your most important contacts!
 
