@@ -41,7 +41,3 @@ New / Edit Contact, the form will help you with the right format of the data.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-```
-
-```
