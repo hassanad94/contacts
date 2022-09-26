@@ -22,7 +22,10 @@ On Button Click a Modal will pop-up and it will show you a form. After uploading
 Every data is mandatory.
 
 ### Edit contact
-On the right side of every contact u can see 3 ... If you click on them, a menu will pop-in and you can select the function which you would like to use. If you click on Edit, a Modal will show up( There is Loader there if but probably you wont see it, due to fast connections ) and you can Edit the contact, Click done and you done :D
+On the right side of every contact u can see 3 ... If you click on them,
+ a menu will pop-in and you can select the function which you would like to use.
+  If you click on Edit, a Modal will show up( There is Loader there if but probably you wont see it,
+  due to fast connections ) and you can Edit the contact, Click done and you done :D
 
 #### Validations
 New / Edit Contact, the form will help you with the right format of the data.
